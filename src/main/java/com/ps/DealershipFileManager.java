@@ -14,7 +14,7 @@ public class DealershipFileManager {
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader("inventory.txt"))) {
 
 
-            // First line is dealership info, so we don't want it in the loop.
+
             String[] dealershipInformation = bufferedReader.readLine().split("\\|");
             String dealershipName = dealershipInformation[0];
             String dealershipAddress = dealershipInformation[1];
@@ -85,7 +85,7 @@ public class DealershipFileManager {
         int odometer = Integer.parseInt(vehicleInfo[6]);
         double price = Double.parseDouble(vehicleInfo[7]);
 
-        //Creating a vehicle and adding the vehicle to the dealership inventory
+
         return new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
     }
 
