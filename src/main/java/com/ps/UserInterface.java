@@ -1,137 +1,161 @@
 package com.ps;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
+    private Dealership dealership;
+    private static Scanner scanner = new Scanner(System.in);
 
-
-    static Scanner scanner = new Scanner(System.in);
-    static Dealership dealership = new Dealership();
-
-    public static void display() {
+    public void display(){
         init();
-    }
 
-    public static void init() {
-        DealershipFileManager dealershipFileManager = new DealershipFileManager();
-
-
-        System.out.println("\n\n---------Welcome to our Dealership!!---------");
         int mainMenuCommand;
 
-        do {
-            System.out.println("What would you like to do?");
-            System.out.println("\t1. Find vehicles within a price range.");
-            System.out.println("\t2. Find vehicles by make and model");
-            System.out.println("\t3. Find vehicles by year.");
-            System.out.println("\t4. Find vehicles by color.");
-            System.out.println("\t5. Find vehicles by mileage range.");
-            System.out.println("\t6. Find vehicles by car type.");
-            System.out.println("\t7. List ALL vehicles.");
-            System.out.println("\t8. Add a vehicle.");
-            System.out.println("\t9. Remove a vehicle.");
-            System.out.println("\t99. Quit.");
+        do{
+            // Needs refactoring
+            System.out.println("1- Find vehicles within a price range");
+            System.out.println("2- Find vehicles by make / model");
+            System.out.println("3- Find vehicles by year range");
+            System.out.println("4- Find vehicles by color");
+            System.out.println("5- Find vehicles by mileage range");
+            System.out.println("6- Find vehicles by type (car, truck, SUV, van)");
+            System.out.println("7- List ALL vehicles");
+            System.out.println("8- Add a vehicle");
+            System.out.println("9- Remove a vehicle");
+            System.out.println("99- Quit");
+
+            System.out.print("Please choose an option: ");
 
             mainMenuCommand = scanner.nextInt();
 
-            switch (mainMenuCommand) {
+            switch (mainMenuCommand){
                 case 1:
-                    // price range
-                    System.out.println("Enter minimum price:");
-                    double minPrice = scanner.nextDouble();
-                    System.out.println("Enter maximum price:");
-                    double maxPrice = scanner.nextDouble();
-
-                    Dealership.filterByPrice(minPrice, maxPrice);
-
-
+                    processGetByPriceRequest();
                     break;
-
                 case 2:
-
-                    System.out.println filterByMakeAndModel ("Enter make and model: ");
-                    String makeAndModel = scanner.nextLine();
-                    scanner.nextLine();
-
+                    processGetByMakeModelRequest();
                     break;
-
-
                 case 3:
-                    // by year
-
-                    System.out.println("Enter year:");
-                    int year = scanner.nextInt();
-                    scanner.nextLine();
-
-                    Dealership.filterByYear(year);
-
+                    processGetByYearRequest();
                     break;
-
                 case 4:
-                    // by color
-                    System.out.println("Enter color:");
-                    String color = scanner.nextLine();
-                    scanner.nextLine();
-                    Dealership.filterByColor(color);
+                    processGetByColorRequest();
                     break;
                 case 5:
-
-//                    // by mileage range
-
-                    System.out.println("Enter minimum mileage:");
-                    int minMileage = scanner.nextInt();
-                    System.out.println("Enter maximum mileage:");
-                    int maxMileage = scanner.nextInt();
-
-                    Dealership.filterByMileage(minMileage, maxMileage);
-                    //   DealershipFileManager.searchByMileageRange(minMileage, maxMileage);
+                    processGetByMileageRequest();
                     break;
-
                 case 6:
-                    // by car type
-                    System.out.println("Enter car type:");
-                    String type = scanner.nextLine();
-                    scanner.nextLine();
-
-
-                    Dealership.filterByType(type);
-                    //  DealershipFileManager.searchByCarType(type);
-
+                    processGetByVehicleTypeRequest();
                     break;
-
                 case 7:
-                    // ALL vehicles
-
-                    Dealership.allVehicles();
-
-
+                    processGetAllVehiclesRequest();
                     break;
-
                 case 8:
-                    // Add a vehicle
-
-                    Dealership.addVehicle(Vehicle vehicle);
-
+                    processAddVehicleRequest();
                     break;
                 case 9:
-                    // Remove a vehicle
-
-                    //  DealershipFileManager.removeVehicle(int vin);
-                    Dealership.removeVehicle(Vehicle vehicle);
-
+                    processRemoveVehicleRequest();
                     break;
                 case 99:
-                    // Quit
-                    System.out.println("Thank you for visiting!");
-                    System.out.println("Exiting application...");
                     break;
-                default:
-                    System.out.println("Invalid command.");
             }
+        } while(mainMenuCommand != 99);
+    }
+
+    private void init(){
+        this.dealership = DealershipFileManager.getDealership();
+    }
+
+    private void displayVehicles(List<Vehicle> vehicles){
+
+        for(Vehicle vehicle: vehicles){
+//            "----  All Vehicles ----
+            System.out.printf("VIN: %d, Year: %d, Make: %s, Model: %s, Type: %s, Color: %s, Odometer: %d, Price: %.2f\n",
+                    vehicle.getVin(),
+                    vehicle.getYear(),
+                    vehicle.getMake(),
+                    vehicle.getModel(),
+                    vehicle.getVehicleType(),
+                    vehicle.getColor(),
+                    vehicle.getOdometer(),
+                    vehicle.getPrice()
+            );
+        }
+    }
 
 
-        } while (mainMenuCommand != 99);
+    public void processGetByPriceRequest(){
+
+    }
+    public void processGetByMakeModelRequest(){
+
+    }
+    public void processGetByYearRequest(){
+
+    }
+    public void processGetByColorRequest(){
+
+    }
+    public void processGetByMileageRequest(){
+
+    }
+    public void processGetByVehicleTypeRequest(){
+
+    }
+    public void processGetAllVehiclesRequest(){
+        List<Vehicle> allVehicles = this.dealership.getAllVehicles();
+        System.out.println("------ All Vehicles ------");
+        displayVehicles(allVehicles);
+    }
+    public void processAddVehicleRequest(){
+        System.out.print("VIN: ");
+        int vin = scanner.nextInt();
+
+        System.out.print("Year: ");
+        int year = scanner.nextInt();
+
+        // Fix: Consume extra carriage
+        scanner.nextLine();
+
+        System.out.print("Make: ");
+        String make = scanner.nextLine();
+
+        System.out.print("Model: ");
+        String model = scanner.nextLine();
+
+        System.out.print("Type: ");
+        String type = scanner.nextLine();
+
+        System.out.print("Color: ");
+        String color = scanner.nextLine();
+
+        System.out.print("Odometer: ");
+        int odometer = scanner.nextInt();
+
+        System.out.print("Price: ");
+        double price = scanner.nextDouble();
+
+        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
+        this.dealership.addVehicle(vehicle);
+
+        DealershipFileManager.saveDealership(this.dealership);
+    }
+    public void processRemoveVehicleRequest(){
+        List<Vehicle> allVehicles = this.dealership.getAllVehicles();
+        displayVehicles(allVehicles);
+        System.out.print("Which would you like to remove? VIN: ");
+        int vin = scanner.nextInt();
+
+        for(Vehicle vehicle: allVehicles){
+            if(vehicle.getVin() == vin){
+                dealership.removeVehicle(vehicle);
+                System.out.println("Vehicle found and removed");
+                DealershipFileManager.saveDealership(this.dealership);
+                return;
+            }
+        }
+
+        System.out.println("Vehicle not found");
     }
 }
-

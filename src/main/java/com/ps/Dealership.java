@@ -1,56 +1,57 @@
 package com.ps;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class Dealership {
+    private String name;
+    private String address;
+    private String phone;
 
-    String name;
-    String address;
-    String phoneNumber;
+    private ArrayList<Vehicle> inventory;
 
-    static ArrayList<Vehicle> carInventory = new ArrayList<>();
-
-    public Dealership() {
-
-    }
-
-
-    // holds information about the dealership
-    // name
-    // address
-
-    // Constructors
-    Dealership(String name, String address, String phoneNumber) {
+    public Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.carInventory = new ArrayList<>(); // instantiating arraylist in constructor
+        this.phone = phone;
+
+        this.inventory = new ArrayList<>();
     }
 
-    //Methods
-
-
-    //Getters and Setters
-
-
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public List<Vehicle> getVehiclesByPrice(double min, double max){
+        return null;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public List<Vehicle> getVehiclesByMakeModel(String make, String model){
+        return null;
     }
 
-    public String getAddress() {
-        return address;
+    public List<Vehicle> getVehicleByYear(int min, int max){
+        return null;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public List<Vehicle> getVehicleByColor(String color){
+        return null;
+    }
+
+    public List<Vehicle> getVehiclesByMileage(int min, int max){
+        return null;
+    }
+
+    public List<Vehicle> getVehiclesByType(String type){
+        return null;
+    }
+
+    public List<Vehicle> getAllVehicles(){
+        return this.inventory;
+    }
+
+    public void addVehicle(Vehicle vehicle){
+        this.inventory.add(vehicle);
+    }
+
+    public void removeVehicle(Vehicle vehicle){
+        this.inventory.remove(vehicle);
     }
 
     public String getName() {
@@ -61,132 +62,28 @@ public class Dealership {
         this.name = name;
     }
 
-    public List<Vehicle> getAllVehicles() {
-        return this.carInventory;
+    public String getAddress() {
+        return address;
     }
 
-
-// maintain list of vehicles
-
-
-// methods to search list for matching vehicles
-
-// add/ remove vehicles
-
-
-    public static ArrayList<Vehicle> filterByPrice(double minimumPrice, double maximumPrice) {
-        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
-
-        if (carInventory.isEmpty()) {
-            return filteredVehicles; // Return empty list if no vehicles available
-        }
-
-        for (Vehicle vehicle : carInventory) {
-            double price = vehicle.getPrice();
-            if (price >= minimumPrice && price <= maximumPrice) {
-                filteredVehicles.add(vehicle);
-            }
-        }
-
-        return filteredVehicles;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public static ArrayList<Vehicle> filterByMakeAndModel(String make, String model) {
-        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
-        for (Vehicle vehicle : carInventory) {
-            if (vehicle.getMake().toLowerCase().contains(make.toLowerCase()) &&
-                    vehicle.getModel().toLowerCase().contains(model.toLowerCase())) {
-                filteredVehicles.add(vehicle);
-            }
-        }
-        return filteredVehicles;
+    public String getPhone() {
+        return phone;
     }
 
-    public static ArrayList<Vehicle> filterByYear(int year) {
-        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
-
-        for (Vehicle vehicle : carInventory) {
-            int yearProvided = vehicle.getYear();
-            if (year == yearProvided) {
-                filteredVehicles.add(vehicle);
-            } else {
-                System.out.println("Sorry, there are no vehicles matching your search");
-            }
-        }
-        return filteredVehicles;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-
-    public static ArrayList<Vehicle> filterByColor(String color) {
-
-        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
-        for (Vehicle vehicle : carInventory) {
-            if (vehicle.getColor().toLowerCase().contains(color.toLowerCase())) {
-                filteredVehicles.add(vehicle);
-            }
-        }
-        return filteredVehicles;
-    }
-
-
-
-        public static ArrayList<Vehicle> filterByMileage(int minMileage, int maxMileage) {
-            ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
-
-            for (Vehicle vehicle : carInventory) {
-                if (vehicle.getOdometer() >= minMileage && vehicle.getOdometer() <= maxMileage) {
-                    filteredVehicles.add(vehicle);
-                }
-            }
-
-            if (filteredVehicles.isEmpty()) {
-                System.out.println("No vehicles found within the specified mileage range.");
-                return null;
-
-            } else {
-                return filteredVehicles;
-            }
-
-
-        }
-
-
-    public static ArrayList<Vehicle> filterByType(String type) {
-        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
-
-        for (Vehicle vehicle : carInventory) {
-            if (vehicle.getVehicleType().toLowerCase().contains(type.toLowerCase())) {
-                filteredVehicles.add(vehicle);
-            }
-        }
-        return filteredVehicles;
-    }
-
-
-
-
-    public static void allVehicles() {
-        if (carInventory.isEmpty()) {
-            System.out.println("No vehicles available.");
-            return;
-        }
-        System.out.println("All Vehicles:");
-        for (Vehicle vehicle : carInventory) {
-            System.out.println(vehicle);
-        }
-    }
-
-
-
-    public static void addVehicle(Vehicle vehicle) {
-        carInventory.add(vehicle);
-    }
-
-
-    public static void removeVehicle(Vehicle vehicle) {
-        carInventory.remove(vehicle);
+    @Override
+    public String toString() {
+        return "Dealership{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }
-
-
-

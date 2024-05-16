@@ -1,93 +1,77 @@
 package com.ps;
 
-
 import java.io.*;
-import java.nio.Buffer;
 
 public class DealershipFileManager {
 
+    public static Dealership getDealership() {
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("DB_Dealership.csv"));
 
-    public Dealership DealershipInformation() {
+            String firstLine = bufReader.readLine();
+            String[] splitFirstLine = firstLine.split("\\|");
 
+            String name = splitFirstLine[0];
+            String address = splitFirstLine[1];
+            String phone = splitFirstLine[2];
 
-
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader("inventory.txt"))) {
-
-
-
-            String[] dealershipInformation = bufferedReader.readLine().split("\\|");
-            String dealershipName = dealershipInformation[0];
-            String dealershipAddress = dealershipInformation[1];
-            String dealershipPhoneNumber = dealershipInformation[2];
-            Dealership dealership = new Dealership(dealershipName, dealershipAddress, dealershipPhoneNumber);
+            Dealership dealership = new Dealership(name, address, phone);
 
             String input;
-            while ((input = bufferedReader.readLine()) != null) {
 
+            while ((input = bufReader.readLine()) != null) {
 
-                Vehicle vehicle = getVehicle(input);
+                String[] splitInput = input.split("\\|");
+                int vin = Integer.parseInt(splitInput[0]);
+                int year = Integer.parseInt(splitInput[1]);
+                String make = splitInput[2];
+                String model = splitInput[3];
+                String type = splitInput[4];
+                String color = splitInput[5];
+                int odometer = Integer.parseInt(splitInput[6]);
+                float price = Float.parseFloat(splitInput[7]);
+
+                Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
+
                 dealership.addVehicle(vehicle);
             }
-            System.out.println("Inventory loaded");
+
+            bufReader.close();
 
             return dealership;
         } catch (IOException e) {
-                System.out.println("Error!");
-            throw new RuntimeException(e);
-
+            e.printStackTrace();
+            return null;
         }
     }
 
-    public void saveDealership(Dealership dealership) {
+    public static void saveDealership(Dealership dealership) {
+        try {
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter("DB_Dealership.csv"));
 
-
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("inventory.txt"))) {
-
-            String dealershipName = dealership.getName();
-            String dealershipAddress = dealership.getAddress();
-            String dealershipPhoneNumber = dealership.getPhoneNumber();
-
-
-            String dealershipInformation = String.format("%s|%s|%s\n", dealershipName, dealershipAddress, dealershipPhoneNumber);
-            bufferedWriter.write(dealershipInformation);
-
+            bufWriter.write(String.format("%s|%s|%s\n",
+                    dealership.getName(),
+                    dealership.getAddress(),
+                    dealership.getPhone()
+            ));
 
             for (Vehicle vehicle : dealership.getAllVehicles()) {
-                String vehicleInformation = String.format("%d,%d,%s,%s,%s,%s,%d,%.2f\n",
+                bufWriter.write(String.format("%d|%d|%s|%s|%s|%s|%d|%f\n",
                         vehicle.getVin(),
                         vehicle.getYear(),
                         vehicle.getMake(),
                         vehicle.getModel(),
-                        vehicle.getColor(),
                         vehicle.getVehicleType(),
+                        vehicle.getColor(),
                         vehicle.getOdometer(),
-                        vehicle.getPrice());
-                bufferedWriter.write(vehicleInformation);
+                        vehicle.getPrice()
+                ));
             }
-            System.out.println("Successfully saved dealership information for " + dealershipName);
 
+            bufWriter.close();
         } catch (IOException e) {
-            System.out.println("Failed to save dealership information: " + e.getMessage());
-            throw new RuntimeException("Error writing to file", e);
+            e.printStackTrace();
         }
     }
-
-
-
-    private Vehicle getVehicle(String input) {
-        String[] vehicleInfo = input.split("\\|");
-        int vin = Integer.parseInt(vehicleInfo[0]);
-        int year = Integer.parseInt(vehicleInfo[1]);
-        String make = vehicleInfo[2];
-        String model = vehicleInfo[3];
-        String vehicleType = vehicleInfo[4];
-        String color = vehicleInfo[5];
-        int odometer = Integer.parseInt(vehicleInfo[6]);
-        double price = Double.parseDouble(vehicleInfo[7]);
-
-
-        return new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
-    }
-
-
 }
+

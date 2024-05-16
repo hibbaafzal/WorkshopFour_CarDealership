@@ -1,11 +1,6 @@
 package com.ps;
 
-
-
 public class Vehicle {
-
-    // information about vehicles
-
     private int vin;
     private int year;
     private String make;
@@ -15,8 +10,7 @@ public class Vehicle {
     private int odometer;
     private double price;
 
-    public Vehicle(int vin, int year, String make, String model, String vehicleType,
-                   String color, int odometer, double price) {
+    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
         this.vin = vin;
         this.year = year;
         this.make = make;
@@ -26,9 +20,6 @@ public class Vehicle {
         this.odometer = odometer;
         this.price = price;
     }
-
-    //Getters and Setters
-
 
     public int getVin() {
         return vin;
@@ -96,15 +87,15 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return String.format("%d|%d|%s|%s|%s|%s|%d|%.2f",
-                getVin(),
-                getYear(),
-                getMake(),
-                getModel(),
-                getColor(),
-                getVehicleType(),
-                getOdometer(),
-                getPrice());
+        return "Vehicle{" +
+                "vin=" + vin +
+                ", year=" + year +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", color='" + color + '\'' +
+                ", odometer=" + odometer +
+                ", price=" + price +
+                '}';
     }
 }
-
